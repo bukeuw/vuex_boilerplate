@@ -6,7 +6,8 @@ use App\User;
 use Tymon\JWTAuth\JWTAuth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\RegisterFormRequest;
+use App\Http\Requests\Auth\{RegisterFormRequest, LoginFormRequest};
+use Tymon\JWTAuth\Exceptions\{JWTException};
 
 class AuthController extends Controller
 {
@@ -15,9 +16,30 @@ class AuthController extends Controller
         $this->auth = $auth;
     }
 
-    public function login(Request $request)
+    public function login(LoginFormRequest $request)
     {
-        $token = $this->auth->attempt($request->only(['email', 'password']));
+        try {
+            if(!$token = $this->auth->attempt($request->only(['email', 'password']))) {
+                return response()->json([
+                    'errors' => [
+                        'root' => 'Invalid credentials'
+                    ]
+                ], 401);
+            }
+        } catch (JWTException $e) {
+            return response()->json([
+                'errors' => [
+                    'root' => 'Could not create token'
+                ]
+            ], $e->getStatusCode());
+        }
+
+        return response()->json([
+            'data' => $request->user(),
+            'meta' => [
+                'token' => $token
+            ]
+        ], 200);
     }
 
     public function register(RegisterFormRequest $request)
