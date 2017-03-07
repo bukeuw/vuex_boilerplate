@@ -15,6 +15,11 @@ class AuthController extends Controller
         $this->auth = $auth;
     }
 
+    public function login(Request $request)
+    {
+        $token = $this->auth->attempt($request->only(['email', 'password']));
+    }
+
     public function register(RegisterFormRequest $request)
     {
         $user = User::create([
