@@ -13,7 +13,7 @@ class FormRequest extends BaseFormRequest
             return new JsonResponse(['errors' => $errors], 422);
         }
 
-        return $this->redirect->to($this->getRedirectUrl())
+        return $this->redirector->to($this->getRedirectUrl())
             ->withInput($this->except($this->dontFlash))
             ->withErrors($errors, $this->errorBag);
     }
