@@ -2,7 +2,8 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 import { Login, Register } from '../components/auth';
-import { Home } from '../components';
+import { Home, NotFound } from '../components';
+import beforeEach from './beforeeach';
 
 Vue.use(Router);
 
@@ -13,7 +14,7 @@ const router = new Router({
             component: Home,
             name: 'home',
             meta: {
-                guess: true,
+                guest: false,
                 needsAuth: false
             }
         },
@@ -22,7 +23,7 @@ const router = new Router({
             component: Login,
             name: 'login',
             meta: {
-                guess: true,
+                guest: true,
                 needsAuth: false
             }
         },
@@ -31,12 +32,18 @@ const router = new Router({
             component: Register,
             name: 'register',
             meta: {
-                guess: true,
+                guest: true,
                 needsAuth: false
             }
+        },
+        {
+            path: '*',
+            component: NotFound
         }
     ]
 });
+
+router.beforeEach(beforeEach);
 
 export default router;
 
