@@ -24,18 +24,20 @@
                 </ul>
 
                 <!-- Right Side Of Navbar -->
-                <ul class="nav navbar-nav navbar-right">
-                    <!-- Authentication Links -->
+                <ul class="nav navbar-nav navbar-right" v-if="!user.authenticated">
                     <li><router-link to="login">Login</router-link></li>
                     <li><router-link to="register">Register</router-link></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right" v-if="user.authenticated">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            {{ 'Bukeuw' }} <span class="caret"></span>
+                            {{ user.data.name }} <span class="caret"></span>
                         </a>
 
                         <ul class="dropdown-menu" role="menu">
                             <li>
-                                <a href="#">
+                                <a href="#" @click.prevent="logout">
                                     Logout
                                 </a>
                             </li>
@@ -48,9 +50,21 @@
 </template>
 
 <script>
+    import { mapGetters, mapActions } from 'vuex';
+
     export default {
-        mounted() {
-            //console.log('Component mounted.')
+        computed: mapGetters({
+            user: 'user'
+        }),
+        methods: {
+            ...mapActions({
+                logout: 'logout'
+            }),
+            signout () {
+                this.logout().then(() => {
+                    this.$router.replace({ name: 'login' });
+                });
+            }
         }
     }
 </script>
