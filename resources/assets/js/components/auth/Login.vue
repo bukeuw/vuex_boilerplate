@@ -13,7 +13,7 @@
                     <label class="control-label col-md-4" for="email">Email</label>
 
                     <div class="col-md-6">
-                        <input class="form-control" id="email" type="email" v-model="email" />
+                        <input class="form-control" id="email" type="email" v-model="email" autofocus />
 
                         <span class="help-block" v-if="errors.email">
                             {{ errors.email[0] }}

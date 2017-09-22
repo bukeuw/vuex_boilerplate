@@ -9,7 +9,7 @@
                     <label class="control-label col-md-4" for="username">Username</label>
 
                     <div class="col-md-6">
-                        <input class="form-control" id="username" type="text" autofocus v-model="name" />
+                        <input class="form-control" id="username" type="text" v-model="name" autofocus />
 
                         <span class="help-block" v-if="errors.name">
                             {{ errors.name[0] }}
